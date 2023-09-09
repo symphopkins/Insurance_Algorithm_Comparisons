@@ -1,0 +1,97 @@
+---
+title: "FinalProject_Hopkins_Symphony"
+author: "Symphony Hopkins"
+date: "2022-12-08"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r, echo = FALSE, include = FALSE}
+#Importing Data and Necessary Libraries
+
+library(readr)
+day <- read_csv("~/Documents/Maryville_University/DSCI_502/day.csv")
+
+library(pscl)
+
+```
+
+```{r, echo = FALSE, include = FALSE}
+#Question 13A
+lm_result_13a <- lm(cnt ~ season + weathersit + atemp + registered, data= day)
+
+#Question 13B
+lm_result_13b <- lm(cnt ~ season + workingday + weathersit + atemp + registered, data= day)
+
+#Question 13C
+lm_result_13c <- lm(cnt ~ season + holiday + workingday + weathersit + atemp + hum + windspeed + registered, data= day)
+```
+
+**13)	Build the following multiple linear regression models:**
+
+**a) Perform multiple linear regression with cnt as the response and the predictors are: season, weathersit, atemp, and registered.**
+
+```{r, echo = TRUE}
+summary(lm_result_13a)
+```
+
+**b) Perform multiple linear regression with cnt as the response and the predictors are: season, workingday, weathersit, atemp, and registered.**
+
+```{r, echo = TRUE}
+summary(lm_result_13b)
+```
+
+**c) Perform multiple linear regression with cnt as the response and the predictors are: season, holiday, workingday, weathersit, atemp, hum, windspeed, and registered.**
+
+```{r, echo = TRUE}
+summary(lm_result_13c)
+```
+
+**Based on the multiple linear regression model results...**
+
+*Model A's adjusted R squared value is `r summary(lm_result_13a)$adj.r.squared`.
+
+*Model B's adjusted R squared value is `r summary(lm_result_13b)$adj.r.squared`.
+
+*Model C's adjusted R squared value is `r summary(lm_result_13c)$adj.r.squared`.
+
+**From these results, we can conclude that *Model C* is the best model to recommend to management.**
+
+```{r, echo = FALSE, include = FALSE}
+#Question 14A
+glm_result_14a <- glm(holiday ~ cnt + season + registered, family=binomial, data=day) 
+
+#Question 14B
+glm_result_14b <- glm(holiday ~ cnt + season + weathersit + registered, family=binomial, data=day) 
+
+#Question 14C
+glm_result_14c <- glm(holiday ~ cnt + season + weathersit + workingday + registered, family=binomial, data=day) 
+```
+
+**14)	Build the following logistic models:**
+
+**a)	forecast holiday using cnt, season, and registered.**
+```{r, echo = TRUE}
+summary(glm_result_14a)
+```
+**b)	forecast the holiday using cnt, season, weathersit , and registered.**
+```{r, echo = TRUE}
+summary(glm_result_14b)
+```
+**c)	forecast the holiday using cnt, season, weathersit , workingday, and registered**
+```{r, echo = TRUE}
+summary(glm_result_14c)
+```
+
+**Based on the logistic regression model results...**
+
+*Model A's McFadden/pseudo R squared value is `r pR2(glm_result_14a)[4]`.
+
+*Model B's McFadden/pseudo R squared value is `r pR2(glm_result_14b)[4]`.
+
+*Model C's McFadden/pseudo R squared value is `r pR2(glm_result_14c)[4]`.
+
+**From these results, I wouldn’t recommend any of these models to the management; however, if I had to choose, it would be *Model C* because it has the highest McFadden/pseudo R squared value.**
